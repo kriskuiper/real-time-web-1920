@@ -2,10 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="/styles/app.css">
     <title>Test chat app</title>
 </head>
 <body>
-    <h1>Hello world</h1>
+		<h1>Hello world</h1>
+
+		<ul id="messageList" class="flat-list"></ul>
+
+		<form action="" id="messageForm">
+			<input type="text" id="messageInput" autocomplete="off" autofocus>
+			<button type="submit">Send</button>
+		</form>
+
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/scripts/index.js"></script>
 </body>
 </html>
