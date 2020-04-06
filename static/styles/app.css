@@ -39,6 +39,7 @@ form > input {
 	flex: 3;
 	padding: 5px;
 	margin-right: 10px;
+	font-size: 1em;
 }
 
 button {
