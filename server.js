@@ -6,6 +6,7 @@ const path = require('path');
 const app = express();
 const server = http.createServer(app);
 const io = socket(server);
+const PORT = process.env.PORT || 3000;
 
 app.use(express.static('static'));
 app.get('/', (request, response) => {
@@ -24,6 +25,6 @@ io.on('connection', (socket) => {
 	});
 });
 
-server.listen(3000, () => {
-  console.log(`Listening on http://localhost:3000`)
+server.listen(PORT, () => {
+  console.log(`Listening on http://localhost:${PORT}`)
 });
