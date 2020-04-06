@@ -16,8 +16,16 @@ app.get('/', (request, response) => {
 io.on('connection', (socket) => {
 	console.log('A user connected');
 
-	socket.on('chat message', (message) => {
-		io.emit('chat message', message);
+	socket.on('chat message', (userConfig) => {
+		io.emit('chat message', userConfig);
+	});
+
+	socket.on('typing', (name) => {
+		io.emit('typing', name);
+	});
+
+	socket.on('not typing', () => {
+		io.emit('not typing');
 	});
 
 	socket.on('disconnect', () => {

@@ -9,11 +9,21 @@
 <body>
 		<h1>Chat anonymously with others</h1>
 
+		<div id="userNameOverlay" class="overlay is-shown">
+			<form action="" id="userNameForm">
+				<input type="text" id="userNameInput">
+				<button type="submit">Set username</button>
+			</form>
+		</div>
+
 		<ul id="messageList" class="flat-list"></ul>
 
 		<form action="" id="messageForm">
-			<input type="text" id="messageInput" autocomplete="off" autofocus>
-			<button type="submit">Send</button>
+			<p id="typingFeedback" class="typing-feedback">...</p>
+			<div class="input-group">
+				<input type="text" id="messageInput" autocomplete="off" autofocus>
+				<button type="submit">Send</button>
+			</div>
 		</form>
 
 		<script src="/socket.io/socket.io.js"></script>
