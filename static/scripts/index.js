@@ -1,5 +1,4 @@
 const socket = io();
-let userName = '';
 
 const $userNameForm = document.getElementById('userNameForm');
 const $userNameInput = document.getElementById('userNameInput');
@@ -15,6 +14,7 @@ $userNameForm.addEventListener('submit', onUserNameFormSubmit);
 $userNameOverlay.addEventListener('transitionend', onOverlayTransitionEnd);
 
 socket.on('chat message', appendMessage);
+socket.on('server message', appendServerMessage);
 socket.on('typing', showTyping);
 socket.on('not typing', hideTyping);
 
@@ -27,7 +27,7 @@ function onUserNameFormSubmit(event) {
 		return
 	}
 
-	userName = value;
+	socket.emit('set username', value);
 
 	$userNameOverlay.classList.remove('is-shown');
 }
@@ -40,7 +40,7 @@ function onMessageFormInput(event) {
 	const { value } = event.target
 
 	if (value) {
-		socket.emit('typing', userName);
+		socket.emit('typing');
 	} else {
 		socket.emit('not typing');
 	}
@@ -49,22 +49,13 @@ function onMessageFormInput(event) {
 function onMessageFormSubmit(event) {
 	event.preventDefault();
 
-	const userConfig = {
-		name: userName,
-		message: $messageInput.value
-	}
-
-	socket.emit('chat message', userConfig);
+	socket.emit('chat message', $messageInput.value);
 	$messageInput.value = '';
 }
 
 
-function showTyping(name) {
-	if (name === userName) {
-		return
-	}
-
-	$typingFeedback.textContent = `${name} is typing`;
+function showTyping(message) {
+	$typingFeedback.textContent = message;
 	$typingFeedback.classList.add('is-shown');
 }
 
@@ -73,22 +64,30 @@ function hideTyping() {
 	$typingFeedback.classList.remove('is-shown');
 }
 
-function appendMessage(userConfig) {
-	if (!userConfig.message) {
+function appendServerMessage(message) {
+	if (!message) {
 		return
 	}
 
-	const li = document.createElement('li');
-
-	console.log(userConfig);
-
-	const userNameToShow = userConfig.name === userName
-		? 'You'
-		: userConfig.name
-
-
-	li.textContent = `${userNameToShow}: ${userConfig.message}`;
+	const li = createMessageElement(message);
+	li.classList.add('server-message');
 
 	$messageList.appendChild(li);
-	$typingFeedback.classList.remove('is-shown');
+}
+
+function appendMessage(message) {
+	if (!message) {
+		return
+	}
+
+	const li = createMessageElement(message);
+
+	$messageList.appendChild(li);
+}
+
+function createMessageElement(message) {
+	const li = document.createElement('li');
+	li.textContent = message;
+
+	return li;
 }
