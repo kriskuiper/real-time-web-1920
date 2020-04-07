@@ -34,6 +34,7 @@ function onUserNameFormSubmit(event) {
 	socket.emit('set username', value);
 
 	$userNameOverlay.classList.remove('is-shown');
+	$messageInput.focus();
 }
 
 function onOverlayTransitionEnd(event) {
