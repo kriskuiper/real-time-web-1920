@@ -3,13 +3,16 @@ const socket = require('socket.io');
 const http = require('http');
 const path = require('path');
 
+const getStartIndex = require('./lib/get-start-index');
+const {
+	DEFAULT_PORT,
+	DEFAULT_USERNAME
+} = require('./lib/constants');
+
 const app = express();
 const server = http.createServer(app);
 const io = socket(server);
-
-const PORT = process.env.PORT || 4000;
-
-let initialUsername = 'anonymous';
+const PORT = process.env.PORT || DEFAULT_PORT;
 const messages = [];
 
 app.use(express.static('static'));
@@ -26,13 +29,16 @@ io.on('connection', (socket) => {
 			userMessageIndex = messages.length;
 		}
 
-		const messagesToShow = messages.slice(0, userMessageIndex);
+		const messagesToShow = messages.slice(
+			getStartIndex(userMessageIndex),
+			userMessageIndex
+		);
 
 		socket.emit('show messages', messagesToShow);
 	});
 
 	socket.on('set username', (username) => {
-		socket.username = username || initialUsername;
+		socket.username = username || DEFAULT_USERNAME;
 
 		socket.emit('server message', `SERVER: Welcome to the chat ${socket.username}.`);
 		socket.broadcast.emit('server message', `SERVER: ${socket.username} has joined the chat.`);
