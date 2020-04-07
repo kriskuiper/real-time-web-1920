@@ -55,6 +55,7 @@ function onMessageFormSubmit(event) {
 	}
 
 	socket.emit('chat message', userConfig);
+	$messageInput.value = '';
 }
 
 
@@ -89,6 +90,5 @@ function appendMessage(userConfig) {
 	li.textContent = `${userNameToShow}: ${userConfig.message}`;
 
 	$messageList.appendChild(li);
-	$messageInput.value = '';
 	$typingFeedback.classList.remove('is-shown');
 }
