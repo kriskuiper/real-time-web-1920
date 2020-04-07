@@ -54,6 +54,8 @@ function onMessageFormSubmit(event) {
 	event.preventDefault();
 
 	socket.emit('chat message', $messageInput.value);
+	socket.emit('not typing');
+
 	$messageInput.value = '';
 }
 
