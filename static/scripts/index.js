@@ -3,17 +3,21 @@ const socket = io();
 const $userNameForm = document.getElementById('userNameForm');
 const $userNameInput = document.getElementById('userNameInput');
 const $userNameOverlay = document.getElementById('userNameOverlay');
+const $lastMessageButton = document.getElementById('lastMessagesButton');
+const $lastMessageList = document.getElementById('lastMessages');
 const $messageList = document.getElementById('messageList');
 const $messageForm = document.getElementById('messageForm');
 const $messageInput = document.getElementById('messageInput');
 const $typingFeedback = document.getElementById('typingFeedback');
 
-$messageForm.addEventListener('submit', onMessageFormSubmit);
-$messageInput.addEventListener('input', onMessageFormInput);
 $userNameForm.addEventListener('submit', onUserNameFormSubmit);
 $userNameOverlay.addEventListener('transitionend', onOverlayTransitionEnd);
+$messageForm.addEventListener('submit', onMessageFormSubmit);
+$messageInput.addEventListener('input', onMessageFormInput);
+$lastMessageButton.addEventListener('click', showLastMessages);
 
-socket.on('chat message', appendMessage);
+socket.on('show messages', showMessages);
+socket.on('chat message', (message) => appendMessage(message, $messageList));
 socket.on('server message', appendServerMessage);
 socket.on('typing', showTyping);
 socket.on('not typing', hideTyping);
@@ -75,14 +79,14 @@ function appendServerMessage(message) {
 	$messageList.appendChild(li);
 }
 
-function appendMessage(message) {
+function appendMessage(message, list) {
 	if (!message) {
 		return
 	}
 
 	const li = createMessageElement(message);
 
-	$messageList.appendChild(li);
+	list.appendChild(li);
 }
 
 function createMessageElement(message) {
@@ -90,4 +94,16 @@ function createMessageElement(message) {
 	li.textContent = message;
 
 	return li;
+}
+
+function showLastMessages() {
+	socket.emit('show messages');
+}
+
+function showMessages(messages) {
+	for (message of messages) {
+		appendMessage(message, $lastMessageList);
+	}
+
+	document.body.removeChild($lastMessageButton);
 }
