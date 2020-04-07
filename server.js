@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 const server = http.createServer(app);
 const io = socket(server);
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 app.use(express.static('static'));
 app.get('/', (request, response) => {
@@ -21,11 +21,11 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('typing', (name) => {
-		io.emit('typing', name);
+		socket.broadcast.emit('typing', name);
 	});
 
 	socket.on('not typing', () => {
-		io.emit('not typing');
+		socket.broadcast.emit('not typing');
 	});
 
 	socket.on('disconnect', () => {
