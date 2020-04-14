@@ -1,4 +1,4 @@
-# Spotify party
+# Queued, for Spotify
 > Collaborate on a Spotify queue of songs together using one users' account as the host
 
 ## Prerequisites
