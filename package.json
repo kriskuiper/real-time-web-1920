@@ -6,8 +6,14 @@
   "author": "Kris <kriskuiper74@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node server",
-    "dev": "nodemon server"
+    "dev": "run-p dev:*",
+    "dev:server": "nodemon server",
+    "dev:js": "rollup -c --watch",
+    "dev:css": "chokidar \"client/assets/scss/*.scss\" -c \"yarn run build:css\"",
+    "build:js": "rollup -c",
+    "build:css": "node-sass client/assets/scss/index.scss client/static/styles/index.css",
+    "prestart": "run-s build:*",
+    "start": "node server"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -20,7 +26,11 @@
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "chokidar-cli": "^2.1.0",
+    "node-sass": "^4.13.1",
+    "nodemon": "^2.0.2",
+    "npm-run-all": "^4.1.5",
+    "rollup": "^2.6.1"
   },
   "_moduleAliases": {
     "@lib": "server/lib",
