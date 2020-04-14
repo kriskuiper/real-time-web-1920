@@ -1,4 +1,4 @@
-# Real time web 1920
+# Spotify party
 > Collaborate on a Spotify queue of songs together using one users' account as the host
 
 ## Prerequisites
