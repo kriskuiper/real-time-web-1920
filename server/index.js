@@ -2,12 +2,14 @@ require('dotenv-safe').config();
 require('module-alias/register');
 
 const express = require('express');
-const socket = require('socket.io');
 const http = require('http');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 const homeRoute = require('@routes/home');
+const partyRoute = require('@routes/party');
+const joinRoute = require('@routes/join');
+
 const spotifyLogin = require('@routes/auth/login');
 const spotifyCallback = require('@routes/auth/callback');
 
@@ -22,6 +24,9 @@ app.use(cookieParser());
 app.use(cors());
 
 app.get('/', homeRoute);
+app.get('/party-:id', partyRoute);
+app.get('/join', joinRoute);
+
 app.get('/auth/login', spotifyLogin);
 app.get('/auth/callback', spotifyCallback);
 
