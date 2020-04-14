@@ -1,12 +1,25 @@
 {% extends '../layouts/default.html' %}
-{% set title = "Login with Spotify" %}
+{% set title = "Spotify party" %}
 
 {% block content %}
 	<header>
 		<h1>{{ title }}</h1>
 	</header>
 
-	<form action="/auth/login">
-		<button type="submit">Log in with Spotify</button>
-	</form>
+	<section>
+		<h2>Join a party</h2>
+
+		<form action="/join">
+			<label for="party-id" class="">Join a party</label>
+			<input type="text" name="party_id" id="party-id" placeholder="Enter party id">
+			<button type="submit">Join</button>
+		</form>
+	</section>
+
+	<footer>
+		<form action="/auth/login">
+			<button type="submit">Create a new party</button>
+			<p>You have to log in with Spotify</p>
+		</form>
+	</footer>
 {% endblock %}
