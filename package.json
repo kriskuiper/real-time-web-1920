@@ -6,14 +6,20 @@
   "author": "Kris <kriskuiper74@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node server",
+    "dev": "nodemon server"
   },
   "dependencies": {
     "express": "^4.17.1",
+    "module-alias": "^2.2.2",
+    "nunjucks": "^3.2.1",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
+  },
+  "_moduleAliases": {
+		"@lib": "server/lib",
+		"@routes": "server/routes"
   }
 }

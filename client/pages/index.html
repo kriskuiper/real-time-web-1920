@@ -1,0 +1,12 @@
+{% extends '../layouts/default.html' %}
+{% set title = "Login with Spotify" %}
+
+{% block content %}
+	<header>
+		<h1>{{ title }}</h1>
+	</header>
+
+	<form action="/login">
+		<button type="submit">Log in with Spotify</button>
+	</form>
+{% endblock %}
