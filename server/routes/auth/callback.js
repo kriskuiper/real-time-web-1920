@@ -1,5 +1,6 @@
 const { cookies } = require('@lib/constants');
 const { getAccessToken } = require('@lib/get-spotify-tokens');
+const generateRandomString = require('@lib/generate-random-string');
 
 module.exports = async (request, response, next) => {
 	const code = request.query.code || null;
@@ -15,11 +16,12 @@ module.exports = async (request, response, next) => {
 
 	try {
 		const { access_token, refresh_token } = await getAccessToken(code);
+		const partyId = generateRandomString(10);
 
 		response.cookie(cookies.ACCESS_TOKEN, access_token);
 		response.cookie(cookies.REFRESH_TOKEN, refresh_token);
 
-		response.redirect('/');
+		response.redirect(`/party-${partyId}`);
 
 	} catch(error) {
 		next(error);
