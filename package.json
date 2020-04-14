@@ -10,6 +10,10 @@
     "dev": "nodemon server"
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv-safe": "^8.2.0",
     "express": "^4.17.1",
     "module-alias": "^2.2.2",
     "nunjucks": "^3.2.1",
@@ -19,7 +23,7 @@
     "nodemon": "^2.0.2"
   },
   "_moduleAliases": {
-		"@lib": "server/lib",
-		"@routes": "server/routes"
+    "@lib": "server/lib",
+    "@routes": "server/routes"
   }
 }
