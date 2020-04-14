@@ -48,6 +48,9 @@ h1, h2, h3, h4 {
 button {
   font-size: 0.825rem; }
 
+form > *:not(:last-child) {
+  margin-bottom: 10px; }
+
 label,
 input,
 textarea {
@@ -57,7 +60,8 @@ textarea {
 
 input,
 textarea {
-  padding: 10px; }
+  padding: 10px;
+  border: 1px solid #eee; }
 
 input::placeholder {
   font-weight: 600; }

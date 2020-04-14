@@ -1,3 +1,7 @@
+form > *:not(:last-child) {
+	margin-bottom: $spacing-small;
+}
+
 label,
 input,
 textarea {
@@ -9,6 +13,7 @@ textarea {
 input,
 textarea {
 	padding: $spacing-small;
+	border: 1px solid #eee;
 }
 
 input::placeholder {
