@@ -1,0 +1,31 @@
+.app-header {
+	background: $color-spotify-black;
+	padding: $spacing-small;
+	color: $color-spotify-white;
+
+	& > .container {
+		@media (max-width: 980px) {
+			padding: 0;
+		}
+	}
+}
+
+.btn {
+	border: 0;
+	border-radius: 100px;
+	padding: 1em 2em;
+	line-height: 1;
+	text-transform: uppercase;
+	font-weight: 600;
+}
+
+.btn-primary {
+	background: $color-spotify-green;
+	color: $color-spotify-white;
+	transition: background .3s ease-in-out;
+
+	&:hover,
+	&:focus {
+		background: $color-spotify-lighter-green;
+	}
+}

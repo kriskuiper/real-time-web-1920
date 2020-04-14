@@ -1,6 +1,17 @@
 // Colors as defined in the Spotify branding guidelines
 // https://developer.spotify.com/branding-guidelines/
-$spotify-color-green: #1DB954;
-$spotify-color-white: #fff;
-$spotify-color-black: #191414;
 
+$color-spotify-green: #1DB954;
+$color-spotify-lighter-green: #1ed760;
+$color-spotify-white: #fff;
+$color-spotify-black: #191414;
+
+// Fonts
+$font-stack: Helvetica, Arial, 'sans-serif';
+
+// Spacing variables
+$spacing-largest: 40px;
+$spacing-large: 30px;
+$spacing-default: 20px;
+$spacing-small: 10px;
+$spacing-smallest: 5px;

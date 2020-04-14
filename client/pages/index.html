@@ -2,23 +2,25 @@
 {% set title = "Queued, for Spotify" %}
 
 {% block content %}
-	<header>
-		<h1>{{ title }}</h1>
+	<header class="app-header">
+		<div class="container">
+			<h1>{{ title }}</h1>
+		</div>
 	</header>
 
-	<section>
+	<section class="container">
 		<h2>Join a party</h2>
 
 		<form action="/join">
 			<label for="party-id" class="">Join a party</label>
 			<input type="text" name="party_id" id="party-id" placeholder="Enter party id">
-			<button type="submit">Join</button>
+			<button type="submit" class="btn btn-primary">Join</button>
 		</form>
 	</section>
 
-	<footer>
+	<footer class="container">
 		<form action="/auth/login">
-			<button type="submit">Create a new party</button>
+			<button type="submit" class="btn btn-primary">Create a new party</button>
 			<p>You have to log in with Spotify</p>
 		</form>
 	</footer>

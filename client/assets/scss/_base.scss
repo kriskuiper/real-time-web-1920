@@ -1,3 +1,16 @@
-body {
-	background: green;
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+.container {
+	max-width: 980px;
+	margin: 0 auto;
+	padding: 0 $spacing-small;
+}
+
+body > *,
+body > .container {
+	margin-bottom: $spacing-default;
 }
