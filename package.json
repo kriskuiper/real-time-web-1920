@@ -24,6 +24,7 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
+    "mongoose": "^5.9.10",
     "node-sass": "^4.13.1",
     "npm-run-all": "^4.1.5",
     "nunjucks": "^3.2.1",
@@ -35,6 +36,9 @@
   },
   "_moduleAliases": {
     "@lib": "server/lib",
-    "@routes": "server/routes"
+		"@routes": "server/routes",
+		"@models": "database/models",
+		"@services": "database/services",
+		"@database": "database"
   }
 }
