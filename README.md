@@ -18,6 +18,9 @@ yarn install
 yarn run dev
 ```
 
+## About the Spotify API
+Some info about the used endpoints, how to get an access key etc.
+
 ## Data life cycle flow
 ### Hosting a party
 ![Hosting a party life cycle](assets/hosting-a-party.png)
