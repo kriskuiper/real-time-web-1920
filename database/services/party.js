@@ -44,7 +44,7 @@ exports.addUser = async (partyId, user) => {
 
 		if (party) {
 			party.users.push(user);
-			party.save();
+			await party.save();
 
 			return Promise.resolve(`Successfully added user to party ${partyId}`);
 		}
@@ -63,7 +63,7 @@ exports.removeUser = async (partyId, user) => {
 			const userIndex = party.users.indexOf(user);
 
 			party.users.splice(userIndex, 1);
-			party.save();
+			await party.save();
 
 			return Promise.resolve('Successfully removed user from party');
 		}
