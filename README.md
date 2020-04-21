@@ -18,6 +18,16 @@ yarn install
 yarn run dev
 ```
 
+## Data life cycle flow
+### Hosting a party
+![Hosting a party life cycle](assets/hosting-a-party.png)
+
+### Joining a party
+![Joining a party](assets/joining-a-party.png)
+
+### Add song to queue
+![Add song to queue](assets/add-song-to-queue.png)
+
 ## Use of websockets
 This project leans heavily on the use of websockets because of it's realtime nature. Here are some commands that get sent around by server and client.
 
