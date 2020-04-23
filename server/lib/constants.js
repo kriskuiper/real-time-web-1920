@@ -9,8 +9,8 @@ exports.spotify = {
 
 exports.cookies = {
 	STATE_KEY: 'stateKey',
-	ACCESS_TOKEN: 'accessToken',
-	REFRESH_TOKEN: 'refreshToken'
+	PARTY_ID: 'partyId',
+	PARTY_UUID: 'partyUUID'
 };
 
 exports.errors = {

@@ -1,5 +1,5 @@
+const mongoose = require('mongoose');
 const Party = require('@models/Party');
-const { DatabaseError } = require('../index');
 
 exports.getIfExists = async (partyId) => {
 	const party = await Party.find({ partyId });
@@ -7,7 +7,7 @@ exports.getIfExists = async (partyId) => {
 	return party || null
 }
 
-exports.create = async ({ id, accessToken, refreshToken, userId }) => {
+exports.create = async ({ partyId, accessToken, refreshToken, userId }) => {
 	const user = {
 		userId,
 		type: 'host'
@@ -16,7 +16,7 @@ exports.create = async ({ id, accessToken, refreshToken, userId }) => {
 	try {
 		const newParty = new Party({
 			_id: new mongoose.Types.ObjectId(),
-			partyId: id,
+			partyId: partyId,
 			accessToken,
 			refreshToken,
 			users: [user]
@@ -26,7 +26,7 @@ exports.create = async ({ id, accessToken, refreshToken, userId }) => {
 
 		return 'Successfully created party';
 	} catch(error) {
-		throw new DatabaseError(error)
+		throw new Error(error)
 	}
 }
 
@@ -36,7 +36,7 @@ exports.remove = async (id) => {
 
 		return 'Successfully removed party'
 	} catch(error) {
-		throw new DatabaseError(error);
+		throw new Error(error);
 	}
 }
 
@@ -57,7 +57,7 @@ exports.addUser = async (partyId, userId) => {
 
 		throw new Error(`Party with id ${partyId} does not exist.`);
 	} catch(error) {
-		throw new DatabaseError(error);
+		throw new Error(error);
 	}
 }
 
@@ -76,7 +76,7 @@ exports.removeUser = async (partyId, user) => {
 
 		throw new Error(`Party with id ${partyId} does not exist.`)
 	} catch(error) {
-		throw new DatabaseError(error);
+		throw new Error(error);
 	}
 }
 
@@ -93,6 +93,6 @@ exports.getTokens = async (partyId) => {
 
 		throw new Error(`Party with id ${partyId} does not exist.`);
 	} catch(error) {
-		throw new DatabaseError(error);
+		throw new Error(error);
 	}
 }

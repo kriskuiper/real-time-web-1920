@@ -14,7 +14,3 @@ exports.connect = () => {
 function handleConnectionError(error) {
 	throw new Error('Unable to connect to database', error);
 }
-
-exports.DatabaseError = (error) => {
-	return new Error('Database error: ', error);
-}
