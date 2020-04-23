@@ -9,6 +9,8 @@ module.exports = (request, response) => {
 
 	ioInstance.io.on('connection', (socket) => {
 		socket.on('disconnect', async () => {
+			// Do we certainly want to remove the user on disconnect?
+
 			const uuid = request.cookies[cookies.PARTY_UUID];
 			const partyId = request.cookies[cookies.PARTY_ID];
 			const decryptedUUID = decryptJWT(uuid);
