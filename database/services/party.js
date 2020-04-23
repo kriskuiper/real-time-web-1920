@@ -2,9 +2,17 @@ const mongoose = require('mongoose');
 const Party = require('@models/Party');
 
 exports.getIfExists = async (partyId) => {
-	const party = await Party.find({ partyId });
+	try {
+		const party = await Party.findOne({ partyId });
 
-	return party || null
+		if (party) {
+			return party;
+		}
+
+		throw `Party with id ${partyId} not found.`;
+	} catch(error) {
+		throw new Error(error);
+	}
 }
 
 exports.create = async ({ partyId, accessToken, refreshToken, userId }) => {
@@ -42,7 +50,7 @@ exports.remove = async (id) => {
 
 exports.addUser = async (partyId, userId) => {
 	try {
-		const party = await Party.find({ partyId });
+		const party = await Party.findOne({ partyId });
 
 		if (party) {
 			party.users = [
@@ -63,7 +71,7 @@ exports.addUser = async (partyId, userId) => {
 
 exports.removeUser = async (partyId, user) => {
 	try {
-		const party = await Party.find({ partyId });
+		const party = await Party.findOne({ partyId });
 
 		if (party) {
 			const userIndex = party.users.indexOf(user);
@@ -82,7 +90,7 @@ exports.removeUser = async (partyId, user) => {
 
 exports.getTokens = async (partyId) => {
 	try {
-		const party = await Party.find({ partyId });
+		const party = await Party.findOne({ partyId });
 
 		if (party) {
 			return {
