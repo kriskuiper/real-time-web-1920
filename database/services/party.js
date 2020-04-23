@@ -7,9 +7,9 @@ exports.getIfExists = async (partyId) => {
 	return party || null
 }
 
-exports.create = async ({ id, accessToken, refreshToken, hostUser }) => {
+exports.create = async ({ id, accessToken, refreshToken, userId }) => {
 	const user = {
-		...hostUser,
+		userId,
 		type: 'host'
 	}
 
@@ -24,7 +24,7 @@ exports.create = async ({ id, accessToken, refreshToken, hostUser }) => {
 
 		await newParty.save();
 
-		return Promise.resolve('Successfully created party');
+		return 'Successfully created party';
 	} catch(error) {
 		throw new DatabaseError(error)
 	}
@@ -33,20 +33,26 @@ exports.create = async ({ id, accessToken, refreshToken, hostUser }) => {
 exports.remove = async (id) => {
 	try {
 		await Party.deleteOne({ partyId: id })
+
+		return 'Successfully removed party'
 	} catch(error) {
 		throw new DatabaseError(error);
 	}
 }
 
-exports.addUser = async (partyId, user) => {
+exports.addUser = async (partyId, userId) => {
 	try {
 		const party = await Party.find({ partyId });
 
 		if (party) {
-			party.users.push(user);
+			party.users = [
+				...party.users,
+				{ userId, type: 'guest' }
+			]
+
 			await party.save();
 
-			return Promise.resolve(`Successfully added user to party ${partyId}`);
+			return `Successfully added user to party ${partyId}`;
 		}
 
 		throw new Error(`Party with id ${partyId} does not exist.`);
@@ -65,7 +71,7 @@ exports.removeUser = async (partyId, user) => {
 			party.users.splice(userIndex, 1);
 			await party.save();
 
-			return Promise.resolve('Successfully removed user from party');
+			return 'Successfully removed user from party';
 		}
 
 		throw new Error(`Party with id ${partyId} does not exist.`)
@@ -79,10 +85,10 @@ exports.getTokens = async (partyId) => {
 		const party = await Party.find({ partyId });
 
 		if (party) {
-			return Promise.resolve({
+			return {
 				accessToken: party.accessToken,
 				refreshToken: party.refreshToken
-			});
+			};
 		}
 
 		throw new Error(`Party with id ${partyId} does not exist.`);
