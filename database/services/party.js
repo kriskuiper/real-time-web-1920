@@ -69,15 +69,20 @@ exports.addUser = async (partyId, userId) => {
 	}
 }
 
-exports.removeUser = async (partyId, user) => {
+exports.removeUser = async (partyId, userId) => {
 	try {
 		const party = await Party.findOne({ partyId });
 
 		if (party) {
-			const userIndex = party.users.indexOf(user);
+			party.users = party.users.filter(user => user.userId !== userId);
 
-			party.users.splice(userIndex, 1);
+			console.log(party.users.length);
+
 			await party.save();
+
+			if (party.users.length === 0) {
+				await this.remove(partyId);
+			}
 
 			return 'Successfully removed user from party';
 		}
