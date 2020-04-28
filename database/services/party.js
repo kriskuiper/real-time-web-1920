@@ -38,9 +38,9 @@ exports.create = async ({ partyId, accessToken, refreshToken, userId }) => {
 	}
 }
 
-exports.remove = async (id) => {
+exports.remove = async (partyId) => {
 	try {
-		await Party.deleteOne({ partyId: id })
+		await Party.deleteOne({ partyId })
 
 		return 'Successfully removed party'
 	} catch(error) {
@@ -76,8 +76,6 @@ exports.removeUser = async (partyId, userId) => {
 		if (party) {
 			party.users = party.users.filter(user => user.userId !== userId);
 
-			console.log(party.users.length);
-
 			await party.save();
 
 			if (party.users.length === 0) {
@@ -89,7 +87,10 @@ exports.removeUser = async (partyId, userId) => {
 
 		throw new Error(`Party with id ${partyId} does not exist.`)
 	} catch(error) {
-		throw new Error(error);
+		// @TODO:
+		// Ideally we could send the user back to the homepage
+		// with the error
+		console.error(error);
 	}
 }
 
