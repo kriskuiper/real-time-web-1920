@@ -60,7 +60,7 @@ exports.getRefreshtoken = async (refreshToken) => {
 }
 
 exports.search = async (request, searchQuery) => {
-	const accessToken = decryptJWT(request.cookies.accessToken);
+	const accessToken = decryptJWT(request.cookies[cookies.ACCESS_TOKEN]);
 
 	const query = queryString.stringify({
 		q: searchQuery,
@@ -85,6 +85,11 @@ exports.search = async (request, searchQuery) => {
 	}
 }
 
+exports.addToQueue = (request, songId) => {
+	const partyId = decryptJWT(request.cookies[cookies.PARTY_ID]);
+
+	return partyId;
+}
 
 function encodeToBase64(text) {
 	return Buffer.from(text).toString('base64');
