@@ -4,13 +4,17 @@ exports.ports = {
 
 exports.spotify = {
 	AUTH_BASEURL: 'https://accounts.spotify.com/authorize',
-	TOKEN_BASEURL: 'https://accounts.spotify.com/api/token'
+	TOKEN_BASEURL: 'https://accounts.spotify.com/api/token',
+	SEARCH_BASEURL: 'https://api.spotify.com/v1/search'
 };
 
 exports.cookies = {
 	STATE_KEY: 'stateKey',
 	PARTY_ID: 'partyId',
-	PARTY_UUID: 'partyUUID'
+	PARTY_UUID: 'partyUUID',
+	ACCESS_TOKEN: 'accessToken',
+	REFRESH_TOKEN: 'refreshToken',
+	USER_INTENTION: 'userIntention'
 };
 
 exports.errors = {

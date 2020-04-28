@@ -10,12 +10,11 @@ module.exports = async (request, response) => {
 		const { partyId } = await partyService.getIfExists(party_id);
 		const userId = generateRandomString(20);
 
-		await partyService.addUser(partyId, userId);
-
 		response.cookie(cookies.PARTY_ID, encryptToJWT(partyId));
 		response.cookie(cookies.PARTY_UUID, encryptToJWT(userId));
+		response.cookie(cookies.USER_INTENTION, 'join');
 
-		response.redirect(`/party-${party_id}`);
+		response.redirect('/auth/login');
 	} catch(error) {
 		console.log(error);
 
