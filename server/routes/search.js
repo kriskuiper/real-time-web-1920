@@ -4,9 +4,9 @@ module.exports = async (request, response) => {
 	const searchQuery = request.query.q;
 
 	try {
-		const tracks = await search(request, searchQuery);
+		const data = await search(request, searchQuery);
 
-		response.json(tracks)
+		response.json(data.tracks.items);
 	} catch(error) {
 		console.log(error);
 
