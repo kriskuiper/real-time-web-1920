@@ -31,12 +31,22 @@ exports.search = async (request, searchQuery) => {
 	}
 }
 
-exports.addToQueue = (request, songId) => {
+exports.addToQueue = async (request, uri) => {
 	const partyId = decryptJWT(request.cookies[cookies.PARTY_ID]);
+	const party = await partyService.getIfExists(partyId);
+	const { accessToken } = party;
 
-	return partyId;
-}
+	const query = queryString.stringify({ uri });
+	const options = {
+		method: 'POST',
+		headers: {
+			'Authorization': `Bearer ${decryptJWT(accessToken)}`
+		}
+	}
 
-function encodeToBase64(text) {
-	return Buffer.from(text).toString('base64');
+	try {
+		await fetch(`${spotify.ADD_TO_QUEUE_BASEURL}?${query}`, options);
+	} catch(error) {
+		throw error;
+	}
 }
