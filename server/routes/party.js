@@ -8,6 +8,10 @@ module.exports = (request, response) => {
 	const { id } = request.params;
 
 	ioInstance.io.on('connection', (socket) => {
+		const roomId = `party-${id}`;
+
+		socket.join(roomId);
+
 		socket.on('disconnect', async () => {
 			// Do we certainly want to remove the user on disconnect?
 
@@ -16,7 +20,11 @@ module.exports = (request, response) => {
 			const decryptedUUID = decryptJWT(uuid);
 			const decryptedPartyId = decryptJWT(partyId);
 
-			await partyService.removeUser(decryptedPartyId.token, decryptedUUID.token);
+			try {
+				await partyService.removeUser(decryptedPartyId, decryptedUUID);
+			} catch {
+				return null
+			}
 		});
 	})
 
