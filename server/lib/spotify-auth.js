@@ -57,3 +57,7 @@ exports.getRefreshtoken = async (refreshToken) => {
 		throw error;
 	}
 }
+
+function encodeToBase64(text) {
+	return Buffer.from(text).toString('base64');
+}
