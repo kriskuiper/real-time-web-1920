@@ -1,5 +1,5 @@
 const { cookies } = require('@lib/constants');
-const { getAccessToken } = require('@lib/spotify-fetch');
+const { getAccessToken } = require('@lib/spotify-auth');
 const generateRandomString = require('@lib/generate-random-string');
 const { encryptToJWT, decryptJWT } = require('@lib/jwt');
 
