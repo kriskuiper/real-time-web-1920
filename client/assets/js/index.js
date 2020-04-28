@@ -1,4 +1,8 @@
-import { elements } from './lib/constants';
+const elements = {
+	SEARCH_RESULTS: document.getElementById('spotify-search-results'),
+	SEARCH_FORM: document.getElementById('spotify-search'),
+	SEARCH_INPUT: document.getElementById('spotify-search-input')
+}
 
 elements.SEARCH_FORM.addEventListener('submit', async (event) => {
 	event.preventDefault();
