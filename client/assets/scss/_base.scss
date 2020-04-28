@@ -14,3 +14,8 @@ body > *,
 body > .container {
 	margin-bottom: $spacing-default;
 }
+
+ul {
+	list-style: none;
+	padding: 0;
+}

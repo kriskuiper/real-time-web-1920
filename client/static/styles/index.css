@@ -12,6 +12,10 @@ body > *,
 body > .container {
   margin-bottom: 20px; }
 
+ul {
+  list-style: none;
+  padding: 0; }
+
 .app-header {
   background: #191414;
   padding: 10px;
