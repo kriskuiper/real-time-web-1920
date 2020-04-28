@@ -4,8 +4,14 @@
 
 {% block content %}
 	<header class="app-header">
-		<h1>The room id is {{ id }}</h1>
+		<div class="container">
+			<h1>The room id is {{ id }}</h1>
+		</div>
 	</header>
 
-	<p>Make your friends join by sharing the room id</p>
+	<section class="container">
+		<p>Make your friends join by sharing the room id</p>
+
+		{% include('../components/spotify-search.html') %}
+	</section>
 {% endblock %}
