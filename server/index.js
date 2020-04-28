@@ -15,6 +15,9 @@ const joinRoute = require('@routes/join');
 const spotifyLogin = require('@routes/auth/login');
 const spotifyCallback = require('@routes/auth/callback');
 
+// Spotify search route
+const searchRoute = require('@routes/search');
+
 const { ports } = require('@lib/constants');
 const ioInstance = require('@lib/io-instance');
 
@@ -36,6 +39,8 @@ app.get('/join', joinRoute);
 
 app.get('/auth/login', spotifyLogin);
 app.get('/auth/callback', spotifyCallback);
+
+app.get('/api/search', searchRoute);
 
 server.listen(PORT, () => {
   console.log(`Listening on http://localhost:${PORT}`)
