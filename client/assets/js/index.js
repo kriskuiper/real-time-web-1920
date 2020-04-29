@@ -55,6 +55,8 @@ async function showSearchResults(event) {
 	const response = await fetch(`/api/search?q=${value}`);
 	const tracks = await response.json();
 
+	removeChildElements(elements.SEARCH_RESULTS);
+
 	for (track of tracks) {
 		const $element = createSongElement(track);
 
@@ -101,4 +103,10 @@ async function addToQueue(event) {
 	const { uri } = event.target.dataset;
 
 	socket.emit('add to queue', { uri });
+}
+
+function removeChildElements(parent) {
+	while (parent.firstChild) {
+		parent.removeChild(parent.firstChild);
+	}
 }
