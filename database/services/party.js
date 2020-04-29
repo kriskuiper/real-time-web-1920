@@ -94,6 +94,22 @@ exports.removeUser = async (partyId, userId) => {
 	}
 }
 
+exports.findUser = async (partyId, userId) => {
+	try {
+		const party = await Party.findOne({ partyId });
+
+		if (party) {
+			const user = party.users.find(user => {
+				return user.userId === userId
+			});
+
+			return user;
+		}
+	} catch(error) {
+		return null
+	}
+}
+
 exports.getTokens = async (partyId) => {
 	try {
 		const party = await Party.findOne({ partyId });
