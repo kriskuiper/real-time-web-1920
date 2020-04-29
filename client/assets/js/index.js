@@ -1,4 +1,6 @@
-const socket = io();
+
+const namespace = window.location.pathname;
+const socket = io(namespace);
 
 const elements = {
 	SEARCH_RESULTS: document.getElementById('spotify-search-results'),
@@ -20,6 +22,14 @@ if (elements.PARTY_VIEW) {
 // Socket event listeners
 socket.on('added to queue', showSongAdded);
 socket.on('server message', showServerMessage);
+socket.on('join', showAccessPopup);
+
+function showAccessPopup({ username, socketId }) {
+	console.log(`${username} wants to join le party`);
+	console.log(`Met socket id: ${socketId}`);
+
+	socket.emit('join', { socketId });
+}
 
 // Event handlers
 function showServerMessage({ message }) {
