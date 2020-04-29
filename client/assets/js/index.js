@@ -3,12 +3,18 @@ const socket = io();
 const elements = {
 	SEARCH_RESULTS: document.getElementById('spotify-search-results'),
 	SEARCH_FORM: document.getElementById('spotify-search'),
-	SEARCH_INPUT: document.getElementById('spotify-search-input')
+	SEARCH_INPUT: document.getElementById('spotify-search-input'),
+	SERVER_MESSAGES: document.getElementById('server-messages'),
+	PARTY_VIEW: document.getElementById('party-view')
 }
 
 // DOM event listeners
 if (elements.SEARCH_FORM) {
 	elements.SEARCH_FORM.addEventListener('submit', showSearchResults);
+}
+
+if (elements.PARTY_VIEW) {
+	elements.PARTY_VIEW.addEventListener('change', changeView)
 }
 
 // Socket event listeners
@@ -17,7 +23,11 @@ socket.on('server message', showServerMessage);
 
 // Event handlers
 function showServerMessage({ message }) {
+	const $serverMessage = document.createElement('p');
+	$serverMessage.textContent = message;
+	$serverMessage.classList.add('server-message');
 
+	elements.SERVER_MESSAGES.appendChild($serverMessage);
 }
 
 function showSongAdded({ uri }) {
@@ -31,6 +41,11 @@ function showSongAdded({ uri }) {
 	$songButton.setAttribute('disabled', true);
 	$songButton.textContent = 'Added!';
 	$songButton.parentElement.classList.add('is-added');
+}
+
+function changeView() {
+	elements.SEARCH_FORM.classList.toggle('is-invisible');
+	elements.SERVER_MESSAGES.classList.toggle('is-invisible');
 }
 
 async function showSearchResults(event) {

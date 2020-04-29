@@ -42,6 +42,16 @@ ul {
 .search-result.is-added {
   color: rgba(25, 20, 20, 0.8); }
 
+.party-view {
+  display: flex; }
+
+.party-view input[type="radio"] {
+  position: absolute;
+  left: -9999px; }
+
+.is-invisible {
+  display: none; }
+
 body {
   font-family: Helvetica, Arial, "sans-serif";
   color: #191414;

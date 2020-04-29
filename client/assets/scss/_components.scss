@@ -33,3 +33,16 @@
 .search-result.is-added {
 	color: rgba($color-spotify-black, 0.8);
 }
+
+.party-view {
+	display: flex;
+}
+
+.party-view input[type="radio"] {
+	position: absolute;
+	left: -9999px;
+}
+
+.is-invisible {
+	display: none;
+}

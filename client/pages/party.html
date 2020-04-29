@@ -11,7 +11,18 @@
 
 	<section class="container">
 		<p>Make your friends join by sharing the room id</p>
+		<form action="" class="party-view" id="party-view">
+			<label>
+				Search
+				<input type="radio" name="view" value="search" checked>
+			</label>
+			<label>
+				Queue
+				<input type="radio" name="view" value="queue">
+			</label>
+		</form>
 
 		{% include('../components/spotify-search.html') %}
+		{% include('../components/server-messages.html') %}
 	</section>
 {% endblock %}

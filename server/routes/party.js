@@ -17,6 +17,9 @@ module.exports = (request, response) => {
 			addToQueue(request, uri)
 				.then(() => {
 					ioInstance.io.to(roomId).emit('added to queue', { uri });
+					ioInstance.io.to(roomId).emit('server message', {
+						message: '{user} added {song name} to the queue'
+					})
 				})
 				.catch(() => null);
 		});
