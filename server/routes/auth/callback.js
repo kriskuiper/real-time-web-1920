@@ -33,7 +33,6 @@ module.exports = async (request, response, next) => {
 		response.clearCookie(cookies.USER_INTENTION);
 
 		try {
-			await partyService.addUser(storedPartyId, storedUserId);
 			response.redirect(`/party-${storedPartyId}`);
 			return
 		} catch(error) {
