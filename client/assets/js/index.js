@@ -1,10 +1,39 @@
+const socket = io();
+
 const elements = {
 	SEARCH_RESULTS: document.getElementById('spotify-search-results'),
 	SEARCH_FORM: document.getElementById('spotify-search'),
 	SEARCH_INPUT: document.getElementById('spotify-search-input')
 }
 
-elements.SEARCH_FORM.addEventListener('submit', async (event) => {
+// DOM event listeners
+if (elements.SEARCH_FORM) {
+	elements.SEARCH_FORM.addEventListener('submit', showSearchResults);
+}
+
+// Socket event listeners
+socket.on('added to queue', showSongAdded);
+socket.on('server message', showServerMessage);
+
+// Event handlers
+function showServerMessage({ message }) {
+
+}
+
+function showSongAdded({ uri }) {
+	// So very imperformant but document.querySelector(`[data-uri="${uri}"]`)
+	// doesn't work for some reason... :(
+	const $buttons = document.querySelectorAll('button');
+	const $songButton = Array.from($buttons).find($button => {
+		return $button.dataset.uri === uri;
+	});
+
+	$songButton.setAttribute('disabled', true);
+	$songButton.textContent = 'Added!';
+	$songButton.parentElement.classList.add('is-added');
+}
+
+async function showSearchResults(event) {
 	event.preventDefault();
 
 	const { value } = elements.SEARCH_INPUT;
@@ -22,7 +51,7 @@ elements.SEARCH_FORM.addEventListener('submit', async (event) => {
 
 		addEventListeners(buttons);
 	}, 0)
-})
+}
 
 function createSongElement(songData) {
 	const $div = document.createElement('div');
@@ -37,6 +66,8 @@ function createSongElement(songData) {
 	$button.textContent = 'Add to queue';
 	$button.setAttribute('data-uri', songData.uri);
 	$button.setAttribute('type', 'button');
+	$button.classList.add('btn');
+	$button.classList.add('btn-secondary');
 
 	$div.appendChild($title);
 	$div.appendChild($artist);
@@ -54,8 +85,5 @@ function addEventListeners(buttons) {
 async function addToQueue(event) {
 	const { uri } = event.target.dataset;
 
-	const response = await fetch(`/api/add-to-queue?uri=${uri}`);
-	const json = await response.json();
-
-	console.log(json);
+	socket.emit('add to queue', { uri });
 }

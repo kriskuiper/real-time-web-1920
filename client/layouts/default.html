@@ -8,10 +8,7 @@
 <body>
 	{% block content %}{% endblock %}
 
-	<script src="/scripts/bundle.js"></script>
-	{% if needsSocket %}
 	<script src="/socket.io/socket.io.js"></script>
-	<script src="/scripts/socket.js"></script>
-	{% endif %}
+	<script src="/scripts/bundle.js"></script>
 </body>
 </html>

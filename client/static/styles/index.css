@@ -39,6 +39,9 @@ ul {
   .btn-primary:hover, .btn-primary:focus {
     background: #1ed760; }
 
+.search-result.is-added {
+  color: rgba(25, 20, 20, 0.8); }
+
 body {
   font-family: Helvetica, Arial, "sans-serif";
   color: #191414;

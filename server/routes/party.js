@@ -2,6 +2,7 @@ const renderer = require('@lib/renderer');
 const ioInstance = require('@lib/io-instance');
 const { cookies } = require('@lib/constants');
 const { decryptJWT } = require('@lib/jwt');
+const { addToQueue } = require('@lib/spotify-fetch');
 const partyService = require('@services/party');
 
 module.exports = (request, response) => {
@@ -11,6 +12,14 @@ module.exports = (request, response) => {
 		const roomId = `party-${id}`;
 
 		socket.join(roomId);
+
+		socket.on('add to queue', ({ uri }) => {
+			addToQueue(request, uri)
+				.then(() => {
+					ioInstance.io.to(roomId).emit('added to queue', { uri });
+				})
+				.catch(() => null);
+		});
 
 		socket.on('disconnect', async () => {
 			// Do we certainly want to remove the user on disconnect?
