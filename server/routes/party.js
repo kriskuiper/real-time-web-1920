@@ -13,47 +13,45 @@ module.exports = async (request, response) => {
 		decryptJWT(request.cookies[cookies.PARTY_ID]);
 	const decryptedUserId = request.cookies[cookies.PARTY_UUID] &&
 		decryptJWT(request.cookies[cookies.PARTY_UUID]);
+	const storedUserIntention = request.cookies[cookies.USER_INTENTION];
 	const namespace = ioInstance.io.of(`/${roomId}`);
 	const user = await getUserData(request);
 
 	request.session.username = user && user.display_name || 'unknown';
 
 	namespace.on('connection', async (socket) => {
-		try {
-			const user = await partyService.findUser(decryptedPartyId, decryptedUserId);
+		socket.partyId = decryptedPartyId;
+		socket.userId = decryptedUserId;
 
-			if (user && user.type === 'host') {
-				if (!parties[decryptedPartyId]) {
-					parties[decryptedPartyId] = {
-						hostSocketId: socket.id,
-						queue: {}
-					};
-					socket.to(parties[decryptedPartyId].hostSocketId).join(roomId);
+		if (!parties[decryptedPartyId]) {
+			parties[decryptedPartyId] = {
+				hostSocketId: socket.id,
+				queue: {}
+			};
+			socket.to(parties[decryptedPartyId].hostSocketId).join(roomId);
+		}
+
+		if (storedUserIntention === 'join') {
+			const { hostSocketId } = parties[decryptedPartyId];
+			const currentSocket = socket.id;
+			const { queue } = parties[decryptedPartyId];
+			const isInQueue = queue[currentSocket];
+
+			if (!isInQueue) {
+				queue[currentSocket] = {
+					username: request.session.username,
+					socketId: currentSocket
 				}
-			} else {
-				const { hostSocketId } = parties[decryptedPartyId];
-				const currentSocket = socket.id;
-				const { queue } = parties[decryptedPartyId];
-				const isInQueue = queue[currentSocket];
 
-				if (!isInQueue) {
-					queue[currentSocket] = {
+				const isFirstInQueue = Object.keys(queue).length === 1;
+
+				if (isFirstInQueue) {
+					socket.to(hostSocketId).emit('join', {
 						username: request.session.username,
 						socketId: currentSocket
-					}
-
-					const isFirstInQueue = Object.keys(queue).length === 1;
-
-					if (isFirstInQueue) {
-						socket.to(hostSocketId).emit('join', {
-							username: request.session.username,
-							socketId: currentSocket
-						})
-					}
+					})
 				}
 			}
-		} catch(error) {
-			console.log(error);
 		}
 
 		socket.on('join', ({ socketId }) => {
@@ -63,7 +61,7 @@ module.exports = async (request, response) => {
 			const nextSocketId = socketIds[nextSocketIndex];
 
 			if (nextSocketId) {
-				socket.to(hostSocketId).emit('new join', {
+				socket.to(hostSocketId).emit('join', {
 					username: queue[nextSocketId].username,
 					socketId: queue[nextSocketId].socketId
 				})
