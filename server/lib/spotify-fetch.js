@@ -50,3 +50,22 @@ exports.addToQueue = async (request, uri) => {
 		throw error;
 	}
 }
+
+exports.getUserData = async (request) => {
+	const accessToken = decryptJWT(request.cookies[cookies.ACCESS_TOKEN]);
+	const options = {
+		method: 'GET',
+		headers: {
+			'Authorization': `Bearer ${accessToken}`
+		}
+	}
+
+	try {
+		const response = await fetch(`${spotify.USER_BASEURL}`, options);
+		const data = await response.json();
+
+		return data
+	} catch(error) {
+		throw error;
+	}
+}
