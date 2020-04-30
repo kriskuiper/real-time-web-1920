@@ -7,7 +7,11 @@ const elements = {
 	SEARCH_FORM: document.getElementById('spotify-search'),
 	SEARCH_INPUT: document.getElementById('spotify-search-input'),
 	SERVER_MESSAGES: document.getElementById('server-messages'),
-	PARTY_VIEW: document.getElementById('party-view')
+	PARTY_VIEW: document.getElementById('party-view'),
+	ACCESS_POPUP: document.getElementById('access-popup'),
+	ACCESS_POPUP_TEXT: document.querySelector('#access-popup p'),
+	ACCESS_BTN_ALLOW: document.getElementById('allow-button'),
+	ACCESS_BTN_DISALLOW: document.getElementById('disallow-button'),
 }
 
 // DOM event listeners
@@ -19,16 +23,39 @@ if (elements.PARTY_VIEW) {
 	elements.PARTY_VIEW.addEventListener('change', changeView)
 }
 
+if (elements.ACCESS_BTN_ALLOW) {
+	elements.ACCESS_BTN_ALLOW.addEventListener('click', (event) => {
+		const { socketId } = event.target.dataset;
+
+		socket.emit('allowed', { socketId });
+	});
+}
+
+if (elements.ACCESS_BTN_DISALLOW) {
+	elements.ACCESS_BTN_DISALLOW.addEventListener('click', (event) => {
+		const { socketId } = event.target.dataset;
+
+		socket.emit('disallowed', { socketId });
+	})
+}
+
 // Socket event listeners
 socket.on('added to queue', showSongAdded);
 socket.on('server message', showServerMessage);
 socket.on('join', showAccessPopup);
+socket.on('allowed', () => {
+	console.log('You may join');
+});
+socket.on('disallowed', () => {
+	console.log('You may not join');
+});
 
 function showAccessPopup({ username, socketId }) {
-	console.log(`${username} wants to join le party`);
-	console.log(`Met socket id: ${socketId}`);
-
-	socket.emit('join', { socketId });
+	const text = `${username} wants to join le party`;
+	elements.ACCESS_POPUP.classList.toggle('is-invisible');
+	elements.ACCESS_POPUP_TEXT.textContent = text;
+	elements.ACCESS_BTN_ALLOW.setAttribute('data-socket-id', socketId);
+	elements.ACCESS_BTN_DISALLOW.setAttribute('data-socket-id', socketId);
 }
 
 // Event handlers

@@ -2,11 +2,11 @@ const renderer = require('@lib/renderer');
 const ioInstance = require('@lib/io-instance');
 const { cookies } = require('@lib/constants');
 const { decryptJWT } = require('@lib/jwt');
-const { addToQueue } = require('@lib/spotify-fetch');
+const { addToQueue, getUserData } = require('@lib/spotify-fetch');
 const partyService = require('@services/party');
 const parties = {};
 
-module.exports = (request, response) => {
+module.exports = async (request, response) => {
 	const { id } = request.params;
 	const roomId = `party-${id}`;
 	const decryptedPartyId = request.cookies[cookies.PARTY_ID] &&
@@ -14,6 +14,9 @@ module.exports = (request, response) => {
 	const decryptedUserId = request.cookies[cookies.PARTY_UUID] &&
 		decryptJWT(request.cookies[cookies.PARTY_UUID]);
 	const namespace = ioInstance.io.of(`/${roomId}`);
+	const user = await getUserData(request);
+
+	request.session.username = user && user.display_name || 'unknown';
 
 	namespace.on('connection', async (socket) => {
 		try {
@@ -23,22 +26,24 @@ module.exports = (request, response) => {
 				if (!parties[decryptedPartyId]) {
 					parties[decryptedPartyId] = {
 						hostSocketId: socket.id,
-						queue: []
+						queue: {}
 					};
 					socket.to(parties[decryptedPartyId].hostSocketId).join(roomId);
 				}
 			} else {
 				const { hostSocketId } = parties[decryptedPartyId];
 				const currentSocket = socket.id;
-				const { queue } = parties[decryptedPartyId]
+				const { queue } = parties[decryptedPartyId];
+				const isInQueue = queue[currentSocket];
 
-				queue.push(currentSocket);
+				if (!isInQueue) {
+					queue[currentSocket] = {
+						username: request.session.username,
+						socketId: currentSocket
+					}
 
-				const isFirstPersonInQueue = queue[0] === currentSocket;
-
-				if (isFirstPersonInQueue) {
 					socket.to(hostSocketId).emit('join', {
-						username: 'Henkie',
+						username: request.session.username,
 						socketId: currentSocket
 					})
 				}
@@ -49,23 +54,16 @@ module.exports = (request, response) => {
 		}
 
 		socket.on('join', ({ socketId }) => {
-			parties[decryptedPartyId].queue = parties[decryptedPartyId].queue
-				.filter(socket => {
-					return socket !== socketId
-				})
+
 		})
 
-		socket.on('allowed to join', (socketId) => {
+		socket.on('allowed', ({ socketId }) => {
 			socket.to(socketId).join(roomId);
-
-			// Add user to DB
-			// Set cookie for party ID en party UUID
-
-			socket.to(socketId).emit('join room');
+			socket.to(socketId).emit('allowed');
 		})
 
-		socket.on('not allowed to join', (socketId) => {
-			socket.to(socketId).emit('disallowed')
+		socket.on('disallowed', ({ socketId }) => {
+			socket.to(socketId).emit('disallowed');
 		})
 
 		socket.on('add to queue', ({ uri }) => {
