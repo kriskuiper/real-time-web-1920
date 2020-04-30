@@ -11,9 +11,7 @@ module.exports = async (request, response, next) => {
 	const storedState = request.cookies[cookies.STATE_KEY] || null;
 	const storedUserIntention = request.cookies[cookies.USER_INTENTION];
 	const partyIdJWT = request.cookies[cookies.PARTY_ID];
-	const userIdJWT = request.cookies[cookies.PARTY_UUID];
 	const storedPartyId = partyIdJWT && decryptJWT(partyIdJWT);
-	const storedUserId = userIdJWT && decryptJWT(userIdJWT);
 
 	const { access_token, refresh_token } = await getAccessToken(code);
 	const accessToken = encryptToJWT(access_token);
@@ -30,15 +28,8 @@ module.exports = async (request, response, next) => {
 	}
 
 	if (storedUserIntention === 'join') {
-		response.clearCookie(cookies.USER_INTENTION);
-
-		try {
-			response.redirect(`/party-${storedPartyId}`);
-			return
-		} catch(error) {
-			console.log(error);
-			return
-		}
+		response.redirect(`/party-${storedPartyId}`);
+		return
 	}
 
 	try {
