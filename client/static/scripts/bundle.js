@@ -29,6 +29,7 @@ if (elements.ACCESS_BTN_ALLOW) {
 		socket.emit('allowed', { socketId });
 
 		elements.ACCESS_POPUP.classList.toggle('is-invisible');
+		socket.emit('join', { socketId });
 	});
 }
 
@@ -39,6 +40,7 @@ if (elements.ACCESS_BTN_DISALLOW) {
 		socket.emit('disallowed', { socketId });
 
 		elements.ACCESS_POPUP.classList.toggle('is-invisible');
+		socket.emit('join', { socketId });
 	});
 }
 
