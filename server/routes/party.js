@@ -42,27 +42,40 @@ module.exports = async (request, response) => {
 						socketId: currentSocket
 					}
 
-					socket.to(hostSocketId).emit('join', {
-						username: request.session.username,
-						socketId: currentSocket
-					})
+					const isFirstInQueue = Object.keys(queue).length === 1;
+
+					if (isFirstInQueue) {
+						socket.to(hostSocketId).emit('join', {
+							username: request.session.username,
+							socketId: currentSocket
+						})
+					}
 				}
 			}
-
 		} catch(error) {
 			console.log(error);
 		}
 
 		socket.on('join', ({ socketId }) => {
+			const { queue, hostSocketId } = parties[decryptedPartyId];
+			const socketIds = Object.keys(queue);
+			const nextSocketIndex = socketIds.indexOf(socketId) + 1;
+			const nextSocketId = socketIds[nextSocketIndex];
 
-		})
+			if (nextSocketId) {
+				socket.to(hostSocketId).emit('new join', {
+					username: queue[nextSocketId].username,
+					socketId: queue[nextSocketId].socketId
+				})
+			}
+		});
 
 		socket.on('allowed', ({ socketId }) => {
 			socket.to(socketId).join(roomId);
 
 			partyService.addUser(decryptedPartyId, decryptedUserId)
 				.then(() => {
-			socket.to(socketId).emit('allowed');
+					socket.to(socketId).emit('allowed');
 				});
 		});
 
