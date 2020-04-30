@@ -27,6 +27,8 @@ if (elements.ACCESS_BTN_ALLOW) {
 		const { socketId } = event.target.dataset;
 
 		socket.emit('allowed', { socketId });
+
+		elements.ACCESS_POPUP.classList.toggle('is-invisible');
 	});
 }
 
@@ -35,6 +37,8 @@ if (elements.ACCESS_BTN_DISALLOW) {
 		const { socketId } = event.target.dataset;
 
 		socket.emit('disallowed', { socketId });
+
+		elements.ACCESS_POPUP.classList.toggle('is-invisible');
 	});
 }
 
