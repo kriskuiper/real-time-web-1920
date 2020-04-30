@@ -2,6 +2,7 @@ require('dotenv-safe').config();
 require('module-alias/register');
 
 const express = require('express');
+const session = require('express-session');
 const http = require('http');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -31,6 +32,11 @@ database.connect().catch(console.error);
 app.use(express.static('client/static'));
 app.use(cookieParser());
 app.use(cors());
+app.use(session({
+	saveUninitialized: false,
+	resave: false,
+	secret: process.env.SESSION_SECRET
+}))
 
 app.get('/', homeRoute);
 app.get('/party-:id', partyRoute);
