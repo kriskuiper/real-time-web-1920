@@ -59,12 +59,16 @@ module.exports = async (request, response) => {
 
 		socket.on('allowed', ({ socketId }) => {
 			socket.to(socketId).join(roomId);
+
+			partyService.addUser(decryptedPartyId, decryptedUserId)
+				.then(() => {
 			socket.to(socketId).emit('allowed');
-		})
+				});
+		});
 
 		socket.on('disallowed', ({ socketId }) => {
 			socket.to(socketId).emit('disallowed');
-		})
+		});
 
 		socket.on('add to queue', ({ uri }) => {
 			addToQueue(request, uri)
