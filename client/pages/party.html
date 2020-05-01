@@ -1,6 +1,5 @@
 {% extends '../layouts/default.html' %}
 {% set title = "Welcome to the party" %}
-{% set needsSocket = true %}
 
 {% block content %}
 	<header class="app-header">
@@ -9,7 +8,9 @@
 		</div>
 	</header>
 
-	<section class="container">
+	{% include('../components/waiting-view.html') %}
+
+	<section class="container is-invisible" id="room-view">
 		<p>Make your friends join by sharing the room id</p>
 		<form action="" class="party-view" id="party-view">
 			<label>

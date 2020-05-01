@@ -19,7 +19,7 @@ module.exports = async (request, response) => {
 
 	request.session.username = user && user.display_name || 'unknown';
 
-	namespace.on('connection', async (socket) => {
+	namespace.on('connection', (socket) => {
 		socket.partyId = decryptedPartyId;
 		socket.userId = decryptedUserId;
 
@@ -28,7 +28,9 @@ module.exports = async (request, response) => {
 				hostSocketId: socket.id,
 				queue: {}
 			};
+
 			socket.to(parties[decryptedPartyId].hostSocketId).join(roomId);
+			namespace.emit('is host');
 		}
 
 		if (storedUserIntention === 'join') {

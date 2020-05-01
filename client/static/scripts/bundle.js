@@ -11,6 +11,8 @@ const elements = {
 	ACCESS_POPUP_TEXT: document.querySelector('#access-popup p'),
 	ACCESS_BTN_ALLOW: document.getElementById('allow-button'),
 	ACCESS_BTN_DISALLOW: document.getElementById('disallow-button'),
+	WAITING_VIEW: document.getElementById('waiting-view'),
+	ROOM_VIEW: document.getElementById('room-view')
 };
 
 // DOM event listeners
@@ -45,15 +47,22 @@ if (elements.ACCESS_BTN_DISALLOW) {
 }
 
 // Socket event listeners
+socket.on('is host', showPageContent);
 socket.on('added to queue', showSongAdded);
 socket.on('server message', showServerMessage);
 socket.on('join', showAccessPopup);
 socket.on('allowed', () => {
-	console.log('You may join');
+	elements.WAITING_VIEW.classList.toggle('is-invisible');
+	elements.ROOM_VIEW.classList.toggle('is-invisible');
 });
 socket.on('disallowed', () => {
-	console.log('You may not join');
+	console.log('You may not join lol bye');
 });
+
+function showPageContent() {
+	elements.WAITING_VIEW.classList.toggle('is-invisible');
+	elements.ROOM_VIEW.classList.toggle('is-invisible');
+}
 
 function showAccessPopup({ username, socketId }) {
 	const text = `${username} wants to join le party`;
