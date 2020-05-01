@@ -54,8 +54,17 @@ ul {
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 10px;
-  background: red; }
+  padding: 1rem;
+  background: #191414;
+  color: #fff;
+  font-weight: 300; }
+
+#allow-button {
+  margin-right: 10px; }
+
+.access-popup_text {
+  margin: 0;
+  margin-bottom: 10px; }
 
 .is-invisible {
   display: none; }
