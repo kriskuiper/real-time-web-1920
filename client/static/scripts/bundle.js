@@ -12,6 +12,7 @@ const elements = {
 	ACCESS_BTN_ALLOW: document.getElementById('allow-button'),
 	ACCESS_BTN_DISALLOW: document.getElementById('disallow-button'),
 	WAITING_VIEW: document.getElementById('waiting-view'),
+	WAITING_VIEW_TITLE: document.getElementById('waiting-view-title'),
 	ROOM_VIEW: document.getElementById('room-view')
 };
 
@@ -56,7 +57,11 @@ socket.on('allowed', () => {
 	elements.ROOM_VIEW.classList.toggle('is-invisible');
 });
 socket.on('disallowed', () => {
-	console.log('You may not join lol bye');
+	elements.WAITING_VIEW_TITLE.textContent = 'You are not allowed to join, you will be sent back in 4 seconds...';
+
+	setTimeout(() => {
+		window.history.back();
+	}, 4000);
 });
 
 function showPageContent() {
