@@ -1,4 +1,3 @@
-
 const namespace = window.location.pathname;
 const socket = io(namespace);
 
