@@ -7,7 +7,8 @@ exports.spotify = {
 	TOKEN_BASEURL: 'https://accounts.spotify.com/api/token',
 	SEARCH_BASEURL: 'https://api.spotify.com/v1/search',
 	ADD_TO_QUEUE_BASEURL: 'https://api.spotify.com/v1/me/player/queue',
-	USER_BASEURL: 'https://api.spotify.com/v1/me'
+	USER_BASEURL: 'https://api.spotify.com/v1/me',
+	SONG_BASEURL: 'https://api.spotify.com/v1/tracks/'
 };
 
 exports.cookies = {

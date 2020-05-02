@@ -51,6 +51,23 @@ exports.addToQueue = async (request, uri) => {
 	}
 }
 
+exports.getSongData = async (request, id) => {
+	const accessToken = decryptJWT(request.cookies[cookies.ACCESS_TOKEN]);
+
+	const query = queryString.stringify({ market: 'from_token' });
+	const options = {
+		method: 'GET',
+		headers: {
+			'Authorization': `Bearer ${accessToken}`
+		}
+	}
+
+	const response = await fetch(`${spotify.SONG_BASEURL}/${id}?${query}`, options);
+	const songData = await response.json();
+
+
+}
+
 exports.getUserData = async (request) => {
 	const accessToken = decryptJWT(request.cookies[cookies.ACCESS_TOKEN]);
 	const options = {
