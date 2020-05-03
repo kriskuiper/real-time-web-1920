@@ -158,6 +158,8 @@ function addEventListeners(buttons) {
 async function addToQueue(event) {
 	const { uri } = event.target.dataset;
 
+	event.target.textContent = 'Adding to queue...';
+
 	socket.emit('add to queue', { uri });
 }
 
