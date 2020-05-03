@@ -39,6 +39,25 @@ ul {
   .btn-primary:hover, .btn-primary:focus {
     background: #1ed760; }
 
+.btn-secondary {
+  border: 1px solid #191414;
+  color: #191414;
+  background: #fff; }
+  .btn-secondary:not(:disabled):hover, .btn-secondary:not(:disabled):focus {
+    background: #191414;
+    border: 1px solid #191414;
+    color: #fff; }
+  .btn-secondary:disabled {
+    color: rgba(25, 20, 20, 0.6);
+    border: 1px solid rgba(25, 20, 20, 0.6); }
+
+.search-result {
+  padding: 20px 10px;
+  border-bottom: 1px solid #191414; }
+
+.search-result:first-child {
+  border-top: 1px solid #191414; }
+
 .search-result.is-added {
   color: rgba(25, 20, 20, 0.8); }
 

@@ -30,6 +30,33 @@
 	}
 }
 
+.btn-secondary {
+	border: 1px solid $color-spotify-black;
+	color: $color-spotify-black;
+	background: $color-spotify-white;
+
+	&:not(:disabled):hover,
+	&:not(:disabled):focus {
+		background: $color-spotify-black;
+		border: 1px solid $color-spotify-black;
+		color: $color-spotify-white;
+	}
+
+	&:disabled {
+		color: rgba($color-spotify-black, 0.6);
+		border: 1px solid rgba($color-spotify-black, 0.6);
+	}
+}
+
+.search-result {
+	padding: 20px 10px;
+	border-bottom: 1px solid $color-spotify-black;
+}
+
+.search-result:first-child {
+	border-top: 1px solid $color-spotify-black;
+}
+
 .search-result.is-added {
 	color: rgba($color-spotify-black, 0.8);
 }
