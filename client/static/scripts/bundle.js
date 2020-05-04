@@ -52,6 +52,16 @@ socket.on('is host', showPageContent);
 socket.on('added to queue', showSongAdded);
 socket.on('server message', showServerMessage);
 socket.on('join', showAccessPopup);
+socket.on('destroy', () => {
+	elements.WAITING_VIEW.classList.toggle('is-invisible');
+	elements.ROOM_VIEW.classList.toggle('is-invisible');
+
+	elements.WAITING_VIEW_TITLE.textContent = 'Host left the party, you will be sent back in 4 seconds...';
+
+	setTimeout(() => {
+		window.history.back();
+	}, 4000);
+});
 socket.on('allowed', () => {
 	elements.WAITING_VIEW.classList.toggle('is-invisible');
 	elements.ROOM_VIEW.classList.toggle('is-invisible');

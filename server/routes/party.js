@@ -103,6 +103,12 @@ module.exports = async (request, response) => {
 			const decryptedPartyId = decryptJWT(partyId);
 
 			try {
+				const user = await partyService.findUser(decryptedPartyId, decryptedUUID);
+
+				if (user && user.type === 'host') {
+					namespace.emit('destroy');
+				}
+
 				await partyService.removeUser(decryptedPartyId, decryptedUUID);
 			} catch {
 				return null
