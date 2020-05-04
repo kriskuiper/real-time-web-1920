@@ -118,3 +118,12 @@ const addToQueue = async (request, uri) => {
 ```
 
 Now when the host (from who the access token is shared) leaves the party, a `destroy` event gets fired in the namespace. This does not only mean that all clients get sent back to the homepage (and so their cookies get cleared) but also that the party gets removed from the database so nobody can access the access- and refresh token again, even encrypted.
+
+## Project wishlist
+- [ ] Make it possible that users can like songs that get added to the playlist ([link to issue](https://github.com/kriskuiper/real-time-web-1920/issues/15))
+- [ ] A host should maybe be able to kick people from the party, although they already joined
+- [ ] Fix some minor bugs, most has to do with wrong or no user feedback although things are not breaking
+
+## Known bugs
+- When there are more people in the queue for approval, the most recently added user can allow or disallow the next one. Only the host should be able to do this :man_shrugging:
+- When a joined user adds a song to the queue, they never get the 'added!' text in the button, although a song is added to the queue :exploding_head:.
