@@ -126,4 +126,5 @@ Now when the host (from who the access token is shared) leaves the party, a `des
 
 ## Known bugs
 - When there are more people in the queue for approval, the most recently added user can allow or disallow the next one. Only the host should be able to do this :man_shrugging:
-- When a joined user adds a song to the queue, they never get the 'added!' text in the button, although a song is added to the queue :exploding_head:.
+- When a joined user adds a song to the queue, they never get the 'added!' text in the button, although a song is added to the queue :exploding_head:
+- Although only one socket fires an `add to queue` event, the song gets added times the amount of people in the namespace
