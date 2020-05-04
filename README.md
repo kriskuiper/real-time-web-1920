@@ -66,7 +66,16 @@ You can read more about the scopes in the [Spotify API docs](https://developer.s
 This project leans heavily on the use of websockets because of it's realtime nature. Here are some commands that get sent around by server and client.
 
 ### From server to client
-<!-- Some info -->
+- `is host`: Let the client know that current user is host so he doesn't have to wait before the view switches
+- `join` (to host only): Let the host know some user wants to join the party
+- `allowed` (to one client at the time): Add user to DB, if that succeeds, let user know they're allowed to join the party
+- `disallowed` (to one client at the time): Let client know they're not allowed to join the party, user gets send back to homepage in 4 seconds
+- `added to queue` (to namespace): Let clients know a song is added to the queue so the view of the song can change to 'added!'
+- `server message` (to namespace): Add "{username} added {song name} to the queue" to the queue view
+- `destroy` (to namespace): Destroy the whole session, let all users refer back to the homepage
 
 ### From client to server
-<!-- Some more info -->
+- `allowed` (from host only): Let the server know a specific socket is allowed to join the party
+- `disallowed` (from host only): Let the server know a specific socket is **not** allowed to join the party
+- `join`: Let the server check if there are people in the party waiting queue
+- `add to queue`: Add a specific song to the queue based on the `data-uri` attribute of the add button
