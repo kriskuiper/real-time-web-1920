@@ -51,7 +51,6 @@ You can read more about the scopes in the [Spotify API docs](https://developer.s
 - `https://api.spotify.com/v1/tracks/` :key: needs access token
 	- Used to get data about the song that's added to the queue like the title.
 
-
 ## Data life cycle flow
 ### Hosting a party
 ![Hosting a party life cycle](assets/hosting-a-party.png)
@@ -79,3 +78,43 @@ This project leans heavily on the use of websockets because of it's realtime nat
 - `disallowed` (from host only): Let the server know a specific socket is **not** allowed to join the party
 - `join`: Let the server check if there are people in the party waiting queue
 - `add to queue`: Add a specific song to the queue based on the `data-uri` attribute of the add button
+
+## A note on security :lock:
+Mostly since I'm sharing an access token over multiple clients I wanted to have this application as secure as possible.
+
+### Using JWT (JSON Web Tokens)
+To store things securely on the database and at all clients I made use of JSON Web Tokens. JWT tokens are tokens that can hold a certain payload. In this case that's mostly an access token or a refresh token. To encrypt or decrypt the token you need some kind of secret, which in this case is stored in an environment variable (`JWT_SECRET`) so it is not known to anybody besides the developer. To state it simple: only the server should be able to read the payload of the tokens and nothing / nobody else.
+
+### Storing data on the database and in cookies
+To make the stored data secure I let the server encrypt it to a JSON Web Token before sending anything to the client or the database. The only data that's stored is encrypted into a JWT, therefore only the server can read it's contents.
+
+### Use case: sharing the access- and refresh token of the host between multiple clients securely :hammer:
+After we've retrieved the access token from the host we encrypt it to a JWT. Also, the party's id gets encrypted to a JWT. Then we store the encrypted access- and refresh token together with the encrypted party id in cookies. Also, a non-encrypted version of the party-id gets stored in the database under the party's entity.
+
+When a user goes to the homepage and still has cookies that can relate to a party those cookies get deleted. When somebody wants to join the party, the host first has to allow them access to the party. This happens using websockets as described earlier. Somebody that joined only has their own (encrypted) access- and refresh token stored in cookies, as well as the encrypted party id.
+
+Now whenever somebody requests to add a song to the queue, we check if the decrypted party id of the request matches a party on the database. If so, the parties `accessToken` gets decrypted and used in the request to Spotify (see below):
+
+```js
+const addToQueue = async (request, uri) => {
+	const partyId = decryptJWT(request.cookies[cookies.PARTY_ID]);
+	const party = await partyService.getIfExists(partyId);
+	const { accessToken } = party;
+
+	const query = queryString.stringify({ uri });
+	const options = {
+		method: 'POST',
+		headers: {
+			'Authorization': `Bearer ${decryptJWT(accessToken)}`
+		}
+	}
+
+	try {
+		await fetch(`${spotify.ADD_TO_QUEUE_BASEURL}?${query}`, options);
+	} catch(error) {
+		throw error;
+	}
+}
+```
+
+Now when the host (from who the access token is shared) leaves the party, a `destroy` event gets fired in the namespace. This does not only mean that all clients get sent back to the homepage (and so their cookies get cleared) but also that the party gets removed from the database so nobody can access the access- and refresh token again, even encrypted.
