@@ -1,6 +1,8 @@
 # Queued, for Spotify
 > Collaborate on a Spotify queue of songs together using one users' account as the host
 
+![Homepage](assets/queued-homepage.png)
+
 ## Prerequisites
 Make sure you have a Spotify account before working on this project so you can use your own `client id` and `client secret`.
 
